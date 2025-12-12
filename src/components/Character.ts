@@ -88,10 +88,10 @@ export class Character extends Container {
 
       if (this._camera) {
         this._camera.moveCenter(this.position);
-        if (this.stopped) {
-          this._camera = undefined;
-          this.emit('stopped');
-        }
+      }
+      if (this.stopped || this.position.y > 4000) {
+        this._camera = undefined;
+        this.emit('stopped');
       }
     };
 
