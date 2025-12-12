@@ -1,6 +1,9 @@
 import '@esotericsoftware/spine-pixi-v8';
 import './mixins/ContainerMixin';
 import './Physics/PhysicsSystem';
+import './PathGenerator/PathGeneratorSystem';
+
+import type { PathGeneratorSystem } from './PathGenerator/PathGeneratorSystem';
 
 declare global {
   namespace PixiMixins {
@@ -10,6 +13,13 @@ declare global {
       set body(body: Matter.Body | undefined);
       syncBodyProperty(): void;
       updateBodyProperty(data: { position?: import('pixi.js').PointData; rotation?: number }): void;
+
+      /* use for recording thing */
+      _beforeData?: Record<string, any>;
+    }
+
+    interface RendererSystems {
+      pathGenerator?: PathGeneratorSystem;
     }
   }
   namespace Matter {

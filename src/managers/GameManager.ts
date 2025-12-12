@@ -174,6 +174,8 @@ export class GameManager {
       this.bunnyTexture,
     );
 
+    this.app.renderer.pathGenerator?.startRecording([...this.entities, this.character]);
+
     this.viewport.addChild(this.character);
 
     // Bind camera
@@ -249,6 +251,11 @@ export class GameManager {
       });
       this.gameOverScreen.resize(this.app.screen.width, this.app.screen.height);
       this.gameOverScreen.visible = true;
+
+      const pathData = this.app.renderer.pathGenerator?.stopRecording();
+
+      console.log(pathData);
+
       this.app.stage.addChild(this.gameOverScreen);
     }
   }
