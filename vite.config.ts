@@ -13,6 +13,7 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  assetsInclude: ['**/*.atlas'],
   build: {
     assetsInlineLimit: 0,
   }
