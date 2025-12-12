@@ -35,6 +35,7 @@ export class AssetsManager {
       src: textureUrl,
       parser: 'texture',
     });
+    console.log(texture);
     await Assets.load({
       alias: `${alias}-atlas`,
       src: atlas,
