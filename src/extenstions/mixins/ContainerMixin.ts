@@ -29,7 +29,7 @@ const mixin: Partial<PrivateContainer> = {
     }
     this._body = body;
     if (body) {
-      (body as any).container = this;
+      body.container = this as unknown as Container;
       Matter.World.add(engine.world, body);
       this.on?.('destroyed', () => {
         body.container = undefined;

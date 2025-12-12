@@ -20,7 +20,7 @@ export class PhysicsSystem implements System {
       if (body.onBeforeUpdate) {
         body.onBeforeUpdate();
       } else {
-        const container = (body as any).container as Container;
+        const container = body.container;
 
         if (container && !container.destroyed) {
           Matter.Body.setPosition(body, container.position);
@@ -34,7 +34,7 @@ export class PhysicsSystem implements System {
       if (body.onAfterUpdate) {
         body.onAfterUpdate();
       } else {
-        const container = (body as any).container as Container;
+        const container = body.container;
         if (container && !container.destroyed) {
           container.position.copyFrom(body.position);
           container.rotation = body.angle;

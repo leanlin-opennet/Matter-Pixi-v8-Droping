@@ -5,7 +5,7 @@ import { engine } from './extenstions/Physics/constant';
 import { CollisionSystem } from './systems/CollisionSystem';
 import { CloudBlinkSystem } from './systems/CloudBlinkSystem';
 import { CoinSystem } from './systems/CoinSystem';
-import { GameManager } from './managers/gameManager';
+import { GameManager } from './managers/GameManager';
 import { Camera } from './components/Camera';
 
 const MapData = {
