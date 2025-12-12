@@ -1,6 +1,7 @@
 import { type Application, Container, Graphics, Text, Assets, type Texture } from 'pixi.js';
 import gsap from 'gsap';
 import Matter from 'matter-js';
+
 import { Character } from '../components/Character';
 import { Coin } from '../components/Coin';
 import { Balloon } from '../components/Balloon';
@@ -8,9 +9,9 @@ import { SmallCloud } from '../components/SmallCloud';
 import type { Camera } from '../components/Camera';
 import { GameOverScreen } from '../components/ui/GameOverScreen';
 
-import { getRandomTrianglePosition } from '@/utils/randomPosition';
+import { assetsManager } from './AssetsManager';
 
-import bunnyImage from '@/assets/bunny.png';
+import { getRandomTrianglePosition } from '@/utils/randomPosition';
 
 export class GameManager {
   private static _instance: GameManager;
@@ -21,8 +22,8 @@ export class GameManager {
   private mapWidth = 6000;
   private mapHeight = 8000;
   private spawnCount = {
-    coins: 80,
-    balloons: 100,
+    coins: 150,
+    balloons: 200,
     clouds: 200,
   };
 
@@ -59,10 +60,9 @@ export class GameManager {
     });
 
     // Load assets
-    this.bunnyTexture = await Assets.load({
-      alias: 'bunny',
-      src: bunnyImage,
-    });
+    await assetsManager.loadAssets();
+
+    this.bunnyTexture = Assets.get('bunny');
 
     this.createWalls();
 

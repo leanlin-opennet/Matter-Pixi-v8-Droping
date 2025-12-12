@@ -1,3 +1,4 @@
+import '@esotericsoftware/spine-pixi-v8';
 import './mixins/ContainerMixin';
 import './Physics/PhysicsSystem';
 
