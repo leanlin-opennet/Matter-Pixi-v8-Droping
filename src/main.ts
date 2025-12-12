@@ -1,0 +1,41 @@
+import { Application } from 'pixi.js';
+import './extenstions'; // Import to register the extension
+
+import { engine } from './extenstions/Physics/constant';
+import { CollisionSystem } from './systems/CollisionSystem';
+import { CloudBlinkSystem } from './systems/CloudBlinkSystem';
+import { CoinSystem } from './systems/CoinSystem';
+import { GameManager } from './managers/gameManager';
+import { Camera } from './components/Camera';
+
+const MapData = {
+  width: 2000,
+  height: 4000,
+};
+
+(async () => {
+  const app = new Application();
+  await app.init({ background: '#1099bb', resizeTo: window });
+  document.getElementById('pixi-container')?.appendChild(app.canvas);
+
+  /* init systems */
+  const collisionSystem = new CollisionSystem(engine);
+  const cloudBlinkSystem = new CloudBlinkSystem();
+  const coinSystem = new CoinSystem();
+
+  collisionSystem.addSystem(cloudBlinkSystem);
+  collisionSystem.addSystem(coinSystem);
+
+  // Initialize Camera (replacing Viewport)
+  const camera = new Camera({
+    events: app.renderer.events,
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    worldWidth: MapData.width,
+    worldHeight: MapData.height,
+  });
+  app.stage.addChild(camera);
+
+  // Initialize Game Manager
+  await GameManager.instance.init(app, camera);
+})();
