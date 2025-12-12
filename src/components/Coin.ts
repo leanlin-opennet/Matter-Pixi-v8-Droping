@@ -1,14 +1,7 @@
-import {
-  Assets,
-  Container,
-  type Graphics,
-  Text,
-  type ContainerOptions,
-  type DestroyOptions,
-} from 'pixi.js';
+import { Container, Text, type ContainerOptions, type DestroyOptions } from 'pixi.js';
 import Matter from 'matter-js';
 import { gsap } from 'gsap';
-import { SkeletonData, Spine } from '@esotericsoftware/spine-pixi-v8';
+import { Spine } from '@esotericsoftware/spine-pixi-v8';
 
 const CoinData = [
   {
