@@ -10,6 +10,8 @@ import { GameOverScreen } from '../components/ui/GameOverScreen';
 
 import { getRandomTrianglePosition } from '@/utils/randomPosition';
 
+import bunnyImage from '@/assets/bunny.png';
+
 export class GameManager {
   private static _instance: GameManager;
   public app!: Application;
@@ -59,7 +61,7 @@ export class GameManager {
     // Load assets
     this.bunnyTexture = await Assets.load({
       alias: 'bunny',
-      src: '/assets/bunny.png',
+      src: bunnyImage,
     });
 
     this.createWalls();
