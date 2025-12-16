@@ -138,6 +138,10 @@ export class Character extends Container {
     });
     this._score = value;
   }
+
+  get characterRotation() {
+    return this.sprite.rotation;
+  }
   updateScore() {
     const fallLength = Math.max(this._totalY - Score.y.min, 0);
     this.score =

@@ -21,6 +21,7 @@ export class GameManager {
 
   private mapWidth = 6000;
   private mapHeight = 8000;
+  private groundHeight = 500;
   private spawnCount = {
     coins: 150,
     balloons: 200,
@@ -77,9 +78,8 @@ export class GameManager {
   }
 
   private createWalls() {
-    const { height } = this.app.screen;
     // Ground
-    this.createWall(0, height - 25, 10000, 50);
+    this.createWall(0, -50, 10000, 50);
   }
 
   private createWall(x: number, y: number, w: number, h: number) {
@@ -99,11 +99,11 @@ export class GameManager {
   }
 
   private spawnEntities() {
-    const { height } = this.app.screen;
+    const spawnHeight = this.mapHeight;
 
     const startPoition = {
       x: -this.mapWidth / 2,
-      y: height - this.mapHeight - 100,
+      y: -this.mapHeight - this.groundHeight,
     };
 
     const coinCount = this.spawnCount.coins;
@@ -112,7 +112,7 @@ export class GameManager {
         startPoition.x,
         startPoition.y,
         this.mapWidth,
-        this.mapHeight,
+        spawnHeight,
       );
       const coin = new Coin({
         x: position.x,
@@ -128,7 +128,7 @@ export class GameManager {
         startPoition.x,
         startPoition.y,
         this.mapWidth,
-        this.mapHeight,
+        spawnHeight,
       );
       const balloon = new Balloon({
         x: position.x,
@@ -145,7 +145,7 @@ export class GameManager {
         startPoition.x,
         startPoition.y,
         this.mapWidth,
-        this.mapHeight,
+        spawnHeight,
       );
       const cloud = new SmallCloud({
         label: 'cloud',
@@ -161,9 +161,8 @@ export class GameManager {
   private spawnCharacter() {
     if (!this.bunnyTexture) return;
 
-    const { height } = this.app.screen;
     const spawnX = 0;
-    const spawnY = height - this.mapHeight - 100;
+    const spawnY = -(this.mapHeight + this.groundHeight) - 100;
 
     this.character = new Character(
       {
@@ -174,7 +173,10 @@ export class GameManager {
       this.bunnyTexture,
     );
 
-    this.app.renderer.pathGenerator?.startRecording([...this.entities, this.character]);
+    this.app.renderer.pathGenerator?.startRecording(
+      [...this.entities, this.character],
+      this.character,
+    );
 
     this.viewport.addChild(this.character);
 
@@ -254,7 +256,9 @@ export class GameManager {
 
       const pathData = this.app.renderer.pathGenerator?.stopRecording();
 
-      console.log(pathData);
+      if (pathData) {
+        this.gameOverScreen.downloadData = pathData;
+      }
 
       this.app.stage.addChild(this.gameOverScreen);
     }

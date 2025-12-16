@@ -1,10 +1,14 @@
 import { Container, Graphics, Text, type FederatedPointerEvent } from 'pixi.js';
+import type { RecordData } from '@/extenstions/PathGenerator/PathGeneratorSystem';
 
 export class GameOverScreen extends Container {
   private background: Graphics;
   private titleText: Text;
   private scoreText: Text;
   private restartButton: Container;
+  private downloadButton: Container;
+
+  public downloadData: RecordData[] = [];
 
   constructor() {
     super();
@@ -52,6 +56,9 @@ export class GameOverScreen extends Container {
     // Create Restart Button
     this.restartButton = this.createRestartButton();
     this.addChild(this.restartButton);
+
+    this.downloadButton = this.createDownloadButton();
+    this.addChild(this.downloadButton);
 
     this.visible = false;
   }
@@ -103,6 +110,51 @@ export class GameOverScreen extends Container {
     return btn;
   }
 
+  private createDownloadButton(): Container {
+    const btn = new Container();
+    btn.label = 'download-button';
+
+    const bg = new Graphics();
+    bg.roundRect(0, 0, 200, 60, 15);
+    bg.fill(0xffffff);
+    bg.stroke({ width: 4, color: 0x000000 });
+
+    const text = new Text({
+      text: 'Download',
+      resolution: window.devicePixelRatio,
+      style: {
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fill: 0x000000,
+      },
+    });
+    text.anchor.set(0.5);
+    text.position.set(100, 30);
+
+    btn.addChild(bg, text);
+    btn.pivot.set(100, 30);
+
+    // Make interactive
+    btn.eventMode = 'static';
+    btn.cursor = 'pointer';
+
+    btn.on('pointerdown', (e: FederatedPointerEvent) => {
+      e.stopPropagation();
+      const jsonData = JSON.stringify(this.downloadData);
+      const blob = new Blob([jsonData], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'path-data.json';
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    return btn;
+  }
+
   public setInfo(info: { score: number }) {
     this.scoreText.text = `Final Score: ${info.score.toFixed(2)}`;
   }
@@ -120,5 +172,7 @@ export class GameOverScreen extends Container {
     this.titleText.position.set(centerX, centerY - 100);
     this.scoreText.position.set(centerX, centerY);
     this.restartButton.position.set(centerX, centerY + 100);
+
+    this.downloadButton.position.set(centerX, centerY + 200);
   }
 }
